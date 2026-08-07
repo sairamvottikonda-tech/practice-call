@@ -195,11 +195,14 @@
       </select>
     </div>
     <div class="field">
-      <label for="effort">Effort</label>
+      <label for="effort">Sport / effort</label>
       <select id="effort">
-        <option value="0.025">Skills / walk-through</option>
-        <option value="0.045" selected>Moderate</option>
-        <option value="0.065">Conditioning</option>
+        <option value="0.025">Walkthrough / stretching</option>
+        <option value="0.035">Baseball / softball</option>
+        <option value="0.045" selected>Soccer / field sports</option>
+        <option value="0.055">Football (bursts + standing)</option>
+        <option value="0.08">Cross country / distance</option>
+        <option value="0.10">Sprint conditioning</option>
       </select>
     </div>
   </div>
@@ -228,6 +231,14 @@
 const LAT = 34.1298, LON = -118.0367;
 const REST_VENT = 0.006;          // m³/min at rest
 const STEP = 5;                   // integration step, minutes
+
+// Sport ventilation values (m³/min) are engineering estimates from typical
+// exercise-physiology minute-ventilation ranges: resting ~6-8 L/min, light
+// activity ~20-30, moderate ~40-60, vigorous/sprint ~80-150. These are
+// general population ranges, not measured or personalized to any athlete —
+// say so if asked. Standing-heavy sports (football, baseball) sit lower
+// on average despite high peak bursts, since most of the practice is spent
+// stationary.
 
 // WAQI aggregates real ground-sensor stations (not a model) — a live
 // cross-check against Open-Meteo's forecast. Free token, client-side use
