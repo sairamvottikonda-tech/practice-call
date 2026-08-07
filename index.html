@@ -176,6 +176,7 @@
   <div class="verdict" id="verdict">
     <h1 id="call">&mdash;</h1>
     <p id="reason" class="status">Pulling the hourly forecast&hellip;</p>
+    <p id="groundCheck" style="margin-top:10px;font-size:14px;color:var(--ink-soft);"></p>
   </div>
 
   <div class="controls">
@@ -227,6 +228,33 @@
 const LAT = 34.1298, LON = -118.0367;
 const REST_VENT = 0.006;          // m³/min at rest
 const STEP = 5;                   // integration step, minutes
+
+// WAQI aggregates real ground-sensor stations (not a model) — a live
+// cross-check against Open-Meteo's forecast. Free token, client-side use
+// is expected by their docs, so it's fine to commit in a public repo.
+const WAQI_TOKEN = '2609ddbaf34b066cccc80ae97e2c7c0b5a0cf954';
+
+function milesBetween(lat1, lon1, lat2, lon2){
+  const R = 3958.8; // Earth radius, miles
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+async function loadGroundStation(){
+  const el = document.getElementById('groundCheck');
+  try{
+    const r = await fetch(`https://api.waqi.info/feed/geo:${LAT};${LON}/?token=${WAQI_TOKEN}`);
+    const j = await r.json();
+    if(j.status !== 'ok') throw new Error('no station nearby');
+    const [slat, slon] = j.data.city.geo;
+    const miles = milesBetween(LAT, LON, slat, slon);
+    el.textContent = `Nearest ground sensor: ${j.data.city.name} (${miles.toFixed(1)} mi away) reads AQI ${j.data.aqi} as of ${j.data.time.s.slice(11,16)}. This is a live cross-check, not part of the forecast used above.`;
+  }catch(e){
+    el.textContent = ''; // fail quietly — this is a bonus, not core
+  }
+}
 
 // Thresholds derived from CIF Sports Medicine Advisory Committee guidance
 // (cifstate.org/sports-medicine/aqi) layered on EPA AQI categories.
@@ -400,6 +428,7 @@ function fail(msg){
   document.getElementById(id).addEventListener('input', render));
 
 load().catch(() => fail('Could not reach the air quality service. Check your connection and reload.'));
+loadGroundStation();
 </script>
 </body>
 </html>
