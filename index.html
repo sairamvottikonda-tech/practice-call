@@ -228,15 +228,46 @@ const LAT = 34.1298, LON = -118.0367;
 const REST_VENT = 0.006;          // m³/min at rest
 const STEP = 5;                   // integration step, minutes
 
-// ⚠️ PLACEHOLDERS — swap for your league's published policy.
+// Thresholds derived from CIF Sports Medicine Advisory Committee guidance
+// (cifstate.org/sports-medicine/aqi) layered on EPA AQI categories.
+// CIF: above 150, seriously consider rescheduling or moving indoors;
+// avoid prolonged exposure and heavy exertion.
+// TODO: confirm against Arcadia Unified's own AR before the demo.
 const BANDS = [
-  { max: 50,  color:'var(--go)',       call:'PRACTICE',        note:'Air is clean. Normal practice.' },
-  { max: 100, color:'var(--moderate)', call:'PRACTICE',        note:'Moderate air. Watch athletes with asthma.' },
-  { max: 150, color:'var(--caution)',  call:'MODIFY',          note:'Cut sustained conditioning. Add rest breaks.' },
-  { max: 200, color:'var(--stop)',     call:'MOVE INDOORS',    call2:'',  note:'Unhealthy for everyone outdoors.' },
-  { max: 999, color:'var(--severe)',   call:'CANCEL',          note:'No outdoor activity.' }
+  { max: 50,  color:'var(--go)',       call:'PRACTICE',
+    note:'Good air. Normal practice.' },
+  { max: 100, color:'var(--moderate)', call:'PRACTICE',
+    note:'Moderate. Unusually sensitive athletes may notice symptoms.' },
+  { max: 150, color:'var(--caution)',  call:'MODIFY',
+    note:'Unhealthy for sensitive groups. Add breaks, cut sustained conditioning, keep inhalers on the sideline.' },
+  { max: 200, color:'var(--stop)',     call:'MOVE INDOORS',
+    note:'CIF: seriously consider rescheduling or moving indoors. Avoid heavy exertion.' },
+  { max: 300, color:'var(--severe)',   call:'CANCEL',
+    note:'Very unhealthy. No outdoor activity.' },
+  { max: 999, color:'var(--severe)',   call:'CANCEL',
+    note:'Hazardous. No outdoor activity.' }
 ];
 const band = aqi => BANDS.find(b => aqi <= b.max);
+
+// EPA's 24-hour PM2.5 standard (35 µg/m³) as a reference concentration —
+// what "acceptable" would look like held constant for the whole session.
+// Peak AQI alone misses prolonged, moderate exposure; this catches it.
+const REFERENCE_PM = 35;
+
+function applyDoseOverride(b, e, minutes, vent){
+  const referenceDose = REFERENCE_PM * vent * minutes;
+  const ratio = e.dose / referenceDose;
+  if(b.call === 'CANCEL') return { ...b, doseRatio: ratio };
+  if(ratio >= 2.5){
+    return { color:'var(--stop)', call:'MOVE INDOORS', doseRatio: ratio,
+      note:`Peak AQI looked fine, but total inhaled dose is ${ratio.toFixed(1)}\u00D7 the EPA 24-hr PM2.5 reference for a session this long. Exposure adds up even when no single hour spikes.` };
+  }
+  if(ratio >= 1.5 && b.call === 'PRACTICE'){
+    return { ...b, call:'MODIFY', doseRatio: ratio,
+      note:`${b.note} Cumulative dose is ${ratio.toFixed(1)}\u00D7 the EPA 24-hr reference for a session this long \u2014 shorten it or add breaks.` };
+  }
+  return { ...b, doseRatio: ratio };
+}
 
 let HOURS = null; // {t: Date, pm: number, aqi: number}[]
 
@@ -314,7 +345,7 @@ function render(){
   const e = exposure(start, minutes, vent);
   if(!e){ fail('That window is past the end of the forecast. Try an earlier time.'); return; }
 
-  const b = band(e.peakAqi);
+  const b = applyDoseOverride(band(e.peakAqi), e, minutes, vent);
   document.getElementById('verdict').style.borderLeftColor = b.color;
   document.getElementById('verdict').classList.add('is-live');
   document.getElementById('call').textContent = b.call;
@@ -351,7 +382,9 @@ function drawTimeline(start, minutes){
     d.title = `${fmt(t)} — AQI ${Math.round(s.aqi)}, PM2.5 ${s.pm.toFixed(1)}`;
     tl.appendChild(d);
     const k = document.createElement('span');
-    k.textContent = t.toLocaleTimeString('en-US',{hour:'numeric'});
+    k.textContent = t.getMinutes() === 0
+      ? t.toLocaleTimeString('en-US',{hour:'numeric'})
+      : t.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     tk.appendChild(k);
   }
 }
