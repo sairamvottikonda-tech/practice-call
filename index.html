@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Call — Arcadia HS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14181C;
+    --ink-soft:#5A6570;
+    --paper:#EEF1F0;
+    --card:#FFFFFF;
+    --line:#C9D1CE;
+    --go:#1B7F4B;
+    --moderate:#A8860B;
+    --caution:#C77A0A;
+    --stop:#B3231F;
+    --severe:#6E1B4E;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    padding:24px 20px 64px;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Barlow',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  /* ---- verdict block: the scoreboard ---- */
+  .verdict{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:10px solid var(--line);
+    padding:22px 22px 20px;
+    margin-bottom:8px;
+  }
+  .verdict.is-live{animation:rise .35s ease-out;}
+  @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .verdict h1{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:clamp(44px,13vw,76px);
+    line-height:.92;
+    letter-spacing:-.01em;
+    text-transform:uppercase;
+    margin:0 0 10px;
+  }
+  .verdict p{
+    margin:0;
+    font-size:16px;
+    line-height:1.45;
+    max-width:46ch;
+  }
+
+  /* ---- controls ---- */
+  .controls{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:24px;
+  }
+  .field{background:var(--card);padding:12px 14px;}
+  .field label{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .field input,.field select{
+    width:100%;
+    border:0;
+    background:transparent;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--ink);
+    padding:0;
+  }
+  .field input:focus,.field select:focus{outline:2px solid var(--ink);outline-offset:3px;}
+  @media(max-width:480px){.controls{grid-template-columns:1fr 1fr;}.field:first-child{grid-column:1/-1;}}
+
+  /* ---- signature: exposure timeline ---- */
+  .section-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 8px;
+  }
+  .timeline{display:flex;gap:2px;height:64px;margin-bottom:6px;}
+  .block{
+    flex:1;
+    position:relative;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:5px;
+    color:#fff;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+  }
+  .ticks{
+    display:flex;gap:2px;margin-bottom:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  }
+  .ticks span{flex:1;text-align:center;}
+
+  .timeline.alt{height:34px;opacity:.5;}
+
+  /* ---- readouts ---- */
+  .stats{
+    display:grid;grid-template-columns:1fr 1fr;gap:1px;
+    background:var(--line);border:1px solid var(--line);margin-bottom:26px;
+  }
+  .stat{background:var(--card);padding:14px;}
+  .stat .n{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;font-size:34px;line-height:1;
+  }
+  .stat .k{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px;
+  }
+
+  .suggest{
+    border-left:3px solid var(--go);
+    padding:12px 0 12px 14px;
+    font-size:16px;line-height:1.45;margin-bottom:26px;
+  }
+
+  footer{
+    border-top:1px solid var(--line);padding-top:14px;
+    font-size:13px;line-height:1.5;color:var(--ink-soft);
+  }
+  footer code{font-family:'IBM Plex Mono',monospace;font-size:12px;}
+
+  .status{font-size:15px;color:var(--ink-soft);}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">
+    <span>Arcadia HS &middot; 34.1298, &minus;118.0367</span>
+    <span id="stamp">loading</span>
+  </div>
+
+  <div class="verdict" id="verdict">
+    <h1 id="call">&mdash;</h1>
+    <p id="reason" class="status">Pulling the hourly forecast&hellip;</p>
+  </div>
+
+  <div class="controls">
+    <div class="field">
+      <label for="start">Practice starts</label>
+      <input type="time" id="start" value="15:30">
+    </div>
+    <div class="field">
+      <label for="mins">Length</label>
+      <select id="mins">
+        <option value="60">60 min</option>
+        <option value="90">90 min</option>
+        <option value="120" selected>120 min</option>
+        <option value="150">150 min</option>
+        <option value="180">180 min</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="effort">Effort</label>
+      <select id="effort">
+        <option value="0.025">Skills / walk-through</option>
+        <option value="0.045" selected>Moderate</option>
+        <option value="0.065">Conditioning</option>
+      </select>
+    </div>
+  </div>
+
+  <p class="section-label">Exposure across the practice window</p>
+  <div class="timeline" id="timeline"></div>
+  <div class="ticks" id="ticks"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="dose">&mdash;</div><div class="k">&micro;g PM2.5 inhaled</div></div>
+    <div class="stat"><div class="n" id="equiv">&mdash;</div><div class="k">&times; a rest day indoors</div></div>
+  </div>
+
+  <div id="suggestBox"></div>
+
+  <footer>
+    <strong>Before you demo this:</strong> the thresholds in <code>BANDS</code> are placeholders using
+    common AQI action levels. Replace them with the actual CIF Southern Section / AUSD air quality
+    policy numbers &mdash; that swap is what makes this app about your school.
+    Air quality data by Open-Meteo (CC&nbsp;BY&nbsp;4.0).
+  </footer>
+
+</div>
+
+<script>
+const LAT = 34.1298, LON = -118.0367;
+const REST_VENT = 0.006;          // m³/min at rest
+const STEP = 5;                   // integration step, minutes
+
+// ⚠️ PLACEHOLDERS — swap for your league's published policy.
+const BANDS = [
+  { max: 50,  color:'var(--go)',       call:'PRACTICE',        note:'Air is clean. Normal practice.' },
+  { max: 100, color:'var(--moderate)', call:'PRACTICE',        note:'Moderate air. Watch athletes with asthma.' },
+  { max: 150, color:'var(--caution)',  call:'MODIFY',          note:'Cut sustained conditioning. Add rest breaks.' },
+  { max: 200, color:'var(--stop)',     call:'MOVE INDOORS',    call2:'',  note:'Unhealthy for everyone outdoors.' },
+  { max: 999, color:'var(--severe)',   call:'CANCEL',          note:'No outdoor activity.' }
+];
+const band = aqi => BANDS.find(b => aqi <= b.max);
+
+let HOURS = null; // {t: Date, pm: number, aqi: number}[]
+
+async function load(){
+  const url = 'https://air-quality-api.open-meteo.com/v1/air-quality'
+    + `?latitude=${LAT}&longitude=${LON}`
+    + '&hourly=pm2_5,us_aqi&timezone=America/Los_Angeles&forecast_days=2';
+  const r = await fetch(url);
+  if(!r.ok) throw new Error('status ' + r.status);
+  const j = await r.json();
+  HOURS = j.hourly.time.map((t,i) => ({
+    t: new Date(t),
+    pm: j.hourly.pm2_5[i],
+    aqi: j.hourly.us_aqi[i]
+  })).filter(h => h.pm !== null);
+  document.getElementById('stamp').textContent =
+    'updated ' + new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  render();
+}
+
+// Linear interpolation between hourly samples — gives minute-level resolution.
+function sampleAt(when){
+  const ms = when.getTime();
+  for(let i=0;i<HOURS.length-1;i++){
+    const a = HOURS[i], b = HOURS[i+1];
+    if(ms >= a.t.getTime() && ms <= b.t.getTime()){
+      const f = (ms - a.t.getTime()) / (b.t.getTime() - a.t.getTime());
+      return { pm: a.pm + (b.pm-a.pm)*f, aqi: a.aqi + (b.aqi-a.aqi)*f };
+    }
+  }
+  return null;
+}
+
+// The actual algorithm: integrate concentration × ventilation over the window.
+function exposure(start, minutes, vent){
+  let dose = 0, peak = 0, pmSum = 0, n = 0;
+  for(let m = 0; m < minutes; m += STEP){
+    const s = sampleAt(new Date(start.getTime() + m*60000));
+    if(!s) return null;
+    dose  += s.pm * vent * STEP;
+    pmSum += s.pm;
+    peak   = Math.max(peak, s.aqi);
+    n++;
+  }
+  const meanPm = pmSum / n;
+  return {
+    dose,
+    peakAqi: Math.round(peak),
+    meanPm,
+    equiv: dose / (meanPm * REST_VENT * minutes)   // vs. sitting still the same length of time
+  };
+}
+
+// Scan the next 24h for a materially cleaner window of the same length.
+function betterWindow(start, minutes, vent, baseline){
+  let best = null;
+  for(let off = 30; off <= 24*60; off += 30){
+    const t = new Date(start.getTime() + off*60000);
+    const e = exposure(t, minutes, vent);
+    if(e && (!best || e.dose < best.e.dose)) best = { t, e };
+  }
+  if(best && best.e.dose < baseline.dose * 0.8) return best;
+  return null;
+}
+
+function render(){
+  if(!HOURS) return;
+  const [hh,mm] = document.getElementById('start').value.split(':').map(Number);
+  const minutes = +document.getElementById('mins').value;
+  const vent    = +document.getElementById('effort').value;
+
+  let start = new Date(); start.setHours(hh, mm, 0, 0);
+  if(start < new Date()) start.setDate(start.getDate() + 1);   // today's slot passed → tomorrow
+
+  const e = exposure(start, minutes, vent);
+  if(!e){ fail('That window is past the end of the forecast. Try an earlier time.'); return; }
+
+  const b = band(e.peakAqi);
+  document.getElementById('verdict').style.borderLeftColor = b.color;
+  document.getElementById('verdict').classList.add('is-live');
+  document.getElementById('call').textContent = b.call;
+  document.getElementById('call').style.color = b.color;
+  document.getElementById('reason').className = '';
+  document.getElementById('reason').textContent =
+    `${b.note} Peak AQI ${e.peakAqi} during a ${minutes}-minute session starting ${fmt(start)}.`;
+
+  document.getElementById('dose').textContent  = e.dose.toFixed(0);
+  document.getElementById('equiv').textContent = e.equiv.toFixed(1) + '\u00D7';
+
+  drawTimeline(start, minutes);
+
+  const alt = betterWindow(start, minutes, vent, e);
+  document.getElementById('suggestBox').innerHTML = alt
+    ? `<div class="suggest">Moving practice to <strong>${fmt(alt.t)}</strong> drops inhaled
+       PM2.5 by <strong>${Math.round((1 - alt.e.dose/e.dose)*100)}%</strong>
+       (${alt.e.dose.toFixed(0)} &micro;g, peak AQI ${alt.e.peakAqi}).</div>`
+    : '';
+}
+
+function drawTimeline(start, minutes){
+  const tl = document.getElementById('timeline');
+  const tk = document.getElementById('ticks');
+  tl.innerHTML = ''; tk.innerHTML = '';
+  const slices = Math.ceil(minutes / 30);
+  for(let i = 0; i < slices; i++){
+    const t = new Date(start.getTime() + i*30*60000);
+    const s = sampleAt(t); if(!s) continue;
+    const d = document.createElement('div');
+    d.className = 'block';
+    d.style.background = band(s.aqi).color;
+    d.textContent = Math.round(s.aqi);
+    d.title = `${fmt(t)} — AQI ${Math.round(s.aqi)}, PM2.5 ${s.pm.toFixed(1)}`;
+    tl.appendChild(d);
+    const k = document.createElement('span');
+    k.textContent = t.toLocaleTimeString('en-US',{hour:'numeric'});
+    tk.appendChild(k);
+  }
+}
+
+const fmt = d => d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+function fail(msg){
+  document.getElementById('call').textContent = 'NO CALL';
+  document.getElementById('reason').textContent = msg;
+}
+
+['start','mins','effort'].forEach(id =>
+  document.getElementById(id).addEventListener('input', render));
+
+load().catch(() => fail('Could not reach the air quality service. Check your connection and reload.'));
+</script>
+</body>
+</html>
