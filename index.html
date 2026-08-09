@@ -6,223 +6,231 @@
 <title>Practice Call — Arcadia HS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#14181C;
-    --ink-soft:#5A6570;
-    --paper:#EEF1F0;
-    --card:#FFFFFF;
-    --line:#C9D1CE;
-    --go:#1B7F4B;
-    --moderate:#A8860B;
-    --caution:#C77A0A;
-    --stop:#B3231F;
-    --severe:#6E1B4E;
+    --bg:#0B0F14;
+    --panel:#131A21;
+    --panel-2:#1B242D;
+    --border: rgba(255,255,255,0.08);
+    --text:#F2F5F7;
+    --text-dim:#8B96A3;
+    --text-faint:#5C6873;
+    --good:#34C77B;
+    --moderate:#E3B341;
+    --caution:#F0883E;
+    --stop:#F0575A;
+    --severe:#B15CDE;
   }
-
   *{box-sizing:border-box;}
-
   body{
     margin:0;
-    padding:24px 20px 64px;
-    background:var(--paper);
-    color:var(--ink);
+    background:var(--bg);
+    color:var(--text);
     font-family:'Barlow',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
+  .app{max-width:480px;margin:0 auto;padding:18px 16px 60px;}
 
-  .wrap{max-width:640px;margin:0 auto;}
-
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin-bottom:20px;
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
+  .topbar{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--text-faint);margin-bottom:14px;
   }
 
-  /* ---- verdict block: the scoreboard ---- */
-  .verdict{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-left:10px solid var(--line);
-    padding:22px 22px 20px;
-    margin-bottom:8px;
+  .section-title{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--text-dim);margin:0 0 10px;
   }
-  .verdict.is-live{animation:rise .35s ease-out;}
-  @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
-  .verdict h1{
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:700;
-    font-size:clamp(44px,13vw,76px);
-    line-height:.92;
-    letter-spacing:-.01em;
-    text-transform:uppercase;
-    margin:0 0 10px;
+  /* ---- hero verdict ---- */
+  .hero{
+    background:var(--panel);border:1px solid var(--border);border-radius:18px;
+    padding:22px 20px;margin-bottom:14px;position:relative;overflow:hidden;
   }
-  .verdict p{
-    margin:0;
-    font-size:16px;
-    line-height:1.45;
-    max-width:46ch;
+  .hero::before{
+    content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--tier,var(--good));
   }
+  .hero-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+  .badge{
+    width:34px;height:34px;border-radius:50%;flex:none;
+    background:color-mix(in srgb, var(--tier,var(--good)) 18%, transparent);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .badge svg{width:18px;height:18px;stroke:var(--tier,var(--good));}
+  .hero-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--tier,var(--good));
+  }
+  .hero h1{
+    font-family:'Barlow Condensed',sans-serif;font-weight:800;
+    font-size:clamp(38px,11vw,52px);line-height:.95;letter-spacing:-.01em;
+    text-transform:uppercase;margin:2px 0 10px;color:var(--tier,var(--good));
+  }
+  .hero-reason{margin:0;font-size:15px;line-height:1.5;color:var(--text-dim);max-width:44ch;}
+
+  /* ---- why this call ---- */
+  .why{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
+  .why ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .why li{display:flex;gap:10px;font-size:14px;line-height:1.5;color:var(--text-dim);}
+  .why .num{
+    flex:none;width:20px;height:20px;border-radius:50%;background:var(--panel-2);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text);margin-top:1px;
+  }
+  .why strong{color:var(--text);font-weight:600;}
 
   /* ---- controls ---- */
-  .controls{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:1px;
-    background:var(--line);
-    border:1px solid var(--line);
-    margin-bottom:24px;
+  .controls{margin-bottom:14px;}
+  .control-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
   }
-  .field{background:var(--card);padding:12px 14px;}
+  .control-grid .full{grid-column:1/-1;}
+  .field{
+    background:var(--panel);border:1px solid var(--border);border-radius:14px;
+    padding:11px 13px;
+  }
   .field label{
-    display:block;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin-bottom:6px;
+    display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px;
   }
   .field input,.field select{
-    width:100%;
-    border:0;
-    background:transparent;
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:600;
-    font-size:20px;
-    color:var(--ink);
-    padding:0;
+    width:100%;border:0;background:transparent;color:var(--text);
+    font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;padding:0;
   }
-  .field input:focus,.field select:focus{outline:2px solid var(--ink);outline-offset:3px;}
-  @media(max-width:480px){.controls{grid-template-columns:1fr 1fr;}.field:first-child{grid-column:1/-1;}}
+  .field select{appearance:none;-webkit-appearance:none;}
+  .field input:focus,.field select:focus{outline:2px solid var(--text-dim);outline-offset:3px;border-radius:4px;}
 
-  /* ---- signature: exposure timeline ---- */
-  .section-label{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin:0 0 8px;
+  /* ---- chart ---- */
+  .chart-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 18px 14px;margin-bottom:14px;}
+  #chart{width:100%;height:150px;display:block;}
+  .legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+  .legend span{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-faint);
+    display:flex;align-items:center;gap:5px;
   }
-  .timeline{display:flex;gap:2px;height:64px;margin-bottom:6px;}
-  .block{
-    flex:1;
-    position:relative;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    padding-bottom:5px;
-    color:#fff;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px;
-  }
-  .ticks{
-    display:flex;gap:2px;margin-bottom:26px;
-    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
-  }
-  .ticks span{flex:1;text-align:center;}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
-  .timeline.alt{height:34px;opacity:.5;}
+  /* ---- stats ---- */
+  .stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
+  .stat-card .n{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;line-height:1;}
+  .stat-card .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-top:5px;}
 
-  /* ---- readouts ---- */
-  .stats{
-    display:grid;grid-template-columns:1fr 1fr;gap:1px;
-    background:var(--line);border:1px solid var(--line);margin-bottom:26px;
+  /* ---- alternatives ---- */
+  .alt-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
+  .alt-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-top:1px solid var(--border);
   }
-  .stat{background:var(--card);padding:14px;}
-  .stat .n{
-    font-family:'Barlow Condensed',sans-serif;
-    font-weight:700;font-size:34px;line-height:1;
-  }
-  .stat .k{
-    font-family:'IBM Plex Mono',monospace;font-size:10px;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px;
+  .alt-row:first-of-type{border-top:none;padding-top:0;}
+  .alt-time{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;}
+  .alt-detail{font-size:12px;color:var(--text-faint);margin-top:2px;}
+  .alt-save{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--good);
+    background:color-mix(in srgb, var(--good) 15%, transparent);
+    padding:4px 9px;border-radius:20px;white-space:nowrap;
   }
 
-  .suggest{
-    border-left:3px solid var(--go);
-    padding:12px 0 12px 14px;
-    font-size:16px;line-height:1.45;margin-bottom:26px;
-  }
+  /* ---- ground station ---- */
+  .ground-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px 20px;margin-bottom:14px;font-size:13px;line-height:1.5;color:var(--text-dim);}
+  .ground-section strong{color:var(--text);}
 
   footer{
-    border-top:1px solid var(--line);padding-top:14px;
-    font-size:13px;line-height:1.5;color:var(--ink-soft);
+    font-size:12.5px;line-height:1.6;color:var(--text-faint);
+    border-top:1px solid var(--border);padding-top:14px;margin-top:6px;
   }
-  footer code{font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  footer code{font-family:'IBM Plex Mono',monospace;font-size:11px;}
+  footer strong{color:var(--text-dim);}
 
-  .status{font-size:15px;color:var(--ink-soft);}
+  .status{color:var(--text-dim);}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;}}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="app">
 
-  <div class="eyebrow">
+  <div class="topbar">
     <span>Arcadia HS &middot; 34.1298, &minus;118.0367</span>
     <span id="stamp">loading</span>
   </div>
 
-  <div class="verdict" id="verdict">
+  <div class="hero" id="hero">
+    <div class="hero-top">
+      <div class="badge" id="badge"></div>
+      <div class="hero-label" id="riskLabel">&mdash;</div>
+    </div>
     <h1 id="call">&mdash;</h1>
-    <p id="reason" class="status">Pulling the hourly forecast&hellip;</p>
-    <p id="groundCheck" style="margin-top:10px;font-size:14px;color:var(--ink-soft);"></p>
+    <p id="reason" class="hero-reason status">Pulling the hourly forecast&hellip;</p>
+  </div>
+
+  <div class="why" id="whyBox" style="display:none">
+    <p class="section-title">Why this call</p>
+    <ul id="whyList"></ul>
   </div>
 
   <div class="controls">
-    <div class="field">
-      <label for="start">Practice starts</label>
-      <input type="time" id="start" value="15:30">
-    </div>
-    <div class="field">
-      <label for="mins">Length</label>
-      <select id="mins">
-        <option value="60">60 min</option>
-        <option value="90">90 min</option>
-        <option value="120" selected>120 min</option>
-        <option value="150">150 min</option>
-        <option value="180">180 min</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="effort">Sport / effort</label>
-      <select id="effort">
-        <option value="0.025">Walkthrough / stretching</option>
-        <option value="0.035">Baseball / softball</option>
-        <option value="0.045" selected>Soccer / field sports</option>
-        <option value="0.055">Football (bursts + standing)</option>
-        <option value="0.08">Cross country / distance</option>
-        <option value="0.10">Sprint conditioning</option>
-      </select>
+    <p class="section-title">Practice window</p>
+    <div class="control-grid">
+      <div class="field">
+        <label for="start">Starts</label>
+        <input type="time" id="start" value="15:30">
+      </div>
+      <div class="field">
+        <label for="mins">Length</label>
+        <select id="mins">
+          <option value="60">60 min</option>
+          <option value="90">90 min</option>
+          <option value="120" selected>120 min</option>
+          <option value="150">150 min</option>
+          <option value="180">180 min</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="effort">Sport / effort</label>
+        <select id="effort">
+          <option value="0.025">Walkthrough / stretching</option>
+          <option value="0.035">Baseball / softball</option>
+          <option value="0.045" selected>Soccer / field sports</option>
+          <option value="0.055">Football (bursts + standing)</option>
+          <option value="0.08">Cross country / distance</option>
+          <option value="0.10">Sprint conditioning</option>
+        </select>
+      </div>
     </div>
   </div>
 
-  <p class="section-label">Exposure across the practice window</p>
-  <div class="timeline" id="timeline"></div>
-  <div class="ticks" id="ticks"></div>
-
-  <div class="stats">
-    <div class="stat"><div class="n" id="dose">&mdash;</div><div class="k">&micro;g PM2.5 inhaled</div></div>
-    <div class="stat"><div class="n" id="equiv">&mdash;</div><div class="k">&times; a rest day indoors</div></div>
+  <div class="chart-section">
+    <p class="section-title">Exposure across the window</p>
+    <svg id="chart" viewBox="0 0 640 150" preserveAspectRatio="none"></svg>
+    <div class="legend">
+      <span><i style="background:var(--good)"></i>Good</span>
+      <span><i style="background:var(--moderate)"></i>Moderate</span>
+      <span><i style="background:var(--caution)"></i>Sensitive groups</span>
+      <span><i style="background:var(--stop)"></i>Unhealthy</span>
+    </div>
   </div>
 
-  <div id="suggestBox"></div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="n" id="dose">&mdash;</div><div class="k">&micro;g PM2.5 inhaled</div></div>
+    <div class="stat-card"><div class="n" id="equiv">&mdash;</div><div class="k">&times; a rest day indoors</div></div>
+  </div>
+
+  <div class="alt-section" id="altSection" style="display:none">
+    <p class="section-title">Better times today</p>
+    <div id="altList"></div>
+  </div>
+
+  <div class="ground-section" id="groundSection" style="display:none"></div>
 
   <footer>
-    <strong>Before you demo this:</strong> the thresholds in <code>BANDS</code> are placeholders using
-    common AQI action levels. Replace them with the actual CIF Southern Section / AUSD air quality
-    policy numbers &mdash; that swap is what makes this app about your school.
-    Air quality data by Open-Meteo (CC&nbsp;BY&nbsp;4.0).
+    <strong>Before you demo this:</strong> the AQI thresholds are derived from public CIF guidance,
+    not yet confirmed against Arcadia Unified's own policy &mdash; that swap is what makes this
+    app official for your school. Validated against the May 19&ndash;20, 2026 LA County smoke
+    advisory naming Arcadia; at these coordinates the model never crossed 101 AQI that day, which
+    is a real gap between modeled and true local conditions during fast-moving smoke, not a bug.
+    Air quality data by Open&ndash;Meteo (CC BY 4.0). Ground station data by
+    <a href="https://waqi.info" style="color:inherit">waqi.info</a>.
   </footer>
 
 </div>
@@ -234,46 +242,12 @@ const STEP = 5;                   // integration step, minutes
 
 // Sport ventilation values (m³/min) are engineering estimates from typical
 // exercise-physiology minute-ventilation ranges: resting ~6-8 L/min, light
-// activity ~20-30, moderate ~40-60, vigorous/sprint ~80-150. These are
-// general population ranges, not measured or personalized to any athlete —
-// say so if asked. Standing-heavy sports (football, baseball) sit lower
-// on average despite high peak bursts, since most of the practice is spent
-// stationary.
-
-// WAQI aggregates real ground-sensor stations (not a model) — a live
-// cross-check against Open-Meteo's forecast. Free token, client-side use
-// is expected by their docs, so it's fine to commit in a public repo.
+// activity ~20-30, moderate ~40-60, vigorous/sprint ~80-150. General
+// population ranges, not measured or personalized to any athlete.
 const WAQI_TOKEN = '2609ddbaf34b066cccc80ae97e2c7c0b5a0cf954';
 
-function milesBetween(lat1, lon1, lat2, lon2){
-  const R = 3958.8; // Earth radius, miles
-  const toRad = d => d * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-async function loadGroundStation(){
-  const el = document.getElementById('groundCheck');
-  try{
-    const r = await fetch(`https://api.waqi.info/feed/geo:${LAT};${LON}/?token=${WAQI_TOKEN}`);
-    const j = await r.json();
-    if(j.status !== 'ok') throw new Error('no station nearby');
-    const [slat, slon] = j.data.city.geo;
-    const miles = milesBetween(LAT, LON, slat, slon);
-    el.textContent = `Nearest ground sensor: ${j.data.city.name} (${miles.toFixed(1)} mi away) reads AQI ${j.data.aqi} as of ${j.data.time.s.slice(11,16)}. This is a live cross-check, not part of the forecast used above.`;
-  }catch(e){
-    el.textContent = ''; // fail quietly — this is a bonus, not core
-  }
-}
-
-// Thresholds derived from CIF Sports Medicine Advisory Committee guidance
-// (cifstate.org/sports-medicine/aqi) layered on EPA AQI categories.
-// CIF: above 150, seriously consider rescheduling or moving indoors;
-// avoid prolonged exposure and heavy exertion.
-// TODO: confirm against Arcadia Unified's own AR before the demo.
 const BANDS = [
-  { max: 50,  color:'var(--go)',       call:'PRACTICE',
+  { max: 50,  color:'var(--good)',     call:'PRACTICE',
     note:'Good air. Normal practice.' },
   { max: 100, color:'var(--moderate)', call:'PRACTICE',
     note:'Moderate. Unusually sensitive athletes may notice symptoms.' },
@@ -290,7 +264,6 @@ const band = aqi => BANDS.find(b => aqi <= b.max);
 
 // EPA's 24-hour PM2.5 standard (35 µg/m³) as a reference concentration —
 // what "acceptable" would look like held constant for the whole session.
-// Peak AQI alone misses prolonged, moderate exposure; this catches it.
 const REFERENCE_PM = 35;
 
 function applyDoseOverride(b, e, minutes, vent){
@@ -308,7 +281,16 @@ function applyDoseOverride(b, e, minutes, vent){
   return { ...b, doseRatio: ratio };
 }
 
-let HOURS = null; // {t: Date, pm: number, aqi: number}[]
+function milesBetween(lat1, lon1, lat2, lon2){
+  const R = 3958.8;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+let HOURS = null;
+let GROUND = null; // {name, miles, aqi, time} once loaded
 
 async function load(){
   const url = 'https://air-quality-api.open-meteo.com/v1/air-quality'
@@ -318,16 +300,35 @@ async function load(){
   if(!r.ok) throw new Error('status ' + r.status);
   const j = await r.json();
   HOURS = j.hourly.time.map((t,i) => ({
-    t: new Date(t),
-    pm: j.hourly.pm2_5[i],
-    aqi: j.hourly.us_aqi[i]
+    t: new Date(t), pm: j.hourly.pm2_5[i], aqi: j.hourly.us_aqi[i]
   })).filter(h => h.pm !== null);
   document.getElementById('stamp').textContent =
     'updated ' + new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
   render();
 }
 
-// Linear interpolation between hourly samples — gives minute-level resolution.
+async function loadGroundStation(){
+  const el = document.getElementById('groundSection');
+  try{
+    const r = await fetch(`https://api.waqi.info/feed/geo:${LAT};${LON}/?token=${WAQI_TOKEN}`);
+    const j = await r.json();
+    if(j.status !== 'ok') throw new Error('no station nearby');
+    const [slat, slon] = j.data.city.geo;
+    GROUND = {
+      name: j.data.city.name,
+      miles: milesBetween(LAT, LON, slat, slon),
+      aqi: j.data.aqi,
+      time: j.data.time.s.slice(11,16)
+    };
+    el.style.display = 'block';
+    el.innerHTML = `<strong>Ground sensor check:</strong> ${GROUND.name} (${GROUND.miles.toFixed(1)} mi away)
+      reads AQI ${GROUND.aqi} as of ${GROUND.time}. Live cross-check against a physical sensor, not part of the forecast above.`;
+    render(); // refresh "why" list now that ground data exists
+  }catch(e){
+    el.style.display = 'none';
+  }
+}
+
 function sampleAt(when){
   const ms = when.getTime();
   for(let i=0;i<HOURS.length-1;i++){
@@ -340,7 +341,6 @@ function sampleAt(when){
   return null;
 }
 
-// The actual algorithm: integrate concentration × ventilation over the window.
 function exposure(start, minutes, vent){
   let dose = 0, peak = 0, pmSum = 0, n = 0;
   for(let m = 0; m < minutes; m += STEP){
@@ -352,24 +352,38 @@ function exposure(start, minutes, vent){
     n++;
   }
   const meanPm = pmSum / n;
-  return {
-    dose,
-    peakAqi: Math.round(peak),
-    meanPm,
-    equiv: dose / (meanPm * REST_VENT * minutes)   // vs. sitting still the same length of time
-  };
+  return { dose, peakAqi: Math.round(peak), meanPm, equiv: dose / (meanPm * REST_VENT * minutes) };
 }
 
-// Scan the next 24h for a materially cleaner window of the same length.
-function betterWindow(start, minutes, vent, baseline){
-  let best = null;
+// Scan the next 24h for materially cleaner windows — top 3, spaced apart.
+function findAlternatives(start, minutes, vent, baselineDose){
+  const candidates = [];
   for(let off = 30; off <= 24*60; off += 30){
     const t = new Date(start.getTime() + off*60000);
     const e = exposure(t, minutes, vent);
-    if(e && (!best || e.dose < best.e.dose)) best = { t, e };
+    if(e && e.dose < baselineDose * 0.85) candidates.push({ t, e });
   }
-  if(best && best.e.dose < baseline.dose * 0.8) return best;
-  return null;
+  candidates.sort((a,b) => a.e.dose - b.e.dose);
+  const picked = [];
+  for(const c of candidates){
+    if(picked.every(p => Math.abs(p.t - c.t) >= 90*60000)) picked.push(c);
+    if(picked.length === 3) break;
+  }
+  return picked;
+}
+
+function buildWhy(b, e, minutes, vent){
+  const items = [];
+  const peakLabel = e.peakAqi <= 100 ? 'within' : 'above';
+  items.push(`<strong>Peak air quality:</strong> AQI ${e.peakAqi} during the window, ${peakLabel} the 100 threshold for unrestricted practice.`);
+  const refDose = REFERENCE_PM * vent * minutes;
+  items.push(`<strong>Cumulative dose:</strong> ${e.dose.toFixed(0)} \u00B5g PM2.5 inhaled &mdash; ${b.doseRatio.toFixed(2)}\u00D7 the ${refDose.toFixed(0)} \u00B5g EPA 24-hr reference for a session this length.`);
+  if(GROUND){
+    const diff = Math.abs(GROUND.aqi - e.peakAqi);
+    const agree = diff <= 15 ? 'agrees closely with' : 'differs from';
+    items.push(`<strong>Ground sensor:</strong> ${GROUND.name} (${GROUND.miles.toFixed(1)} mi) reads AQI ${GROUND.aqi}, which ${agree} the forecast model.`);
+  }
+  return items;
 }
 
 function render(){
@@ -379,53 +393,93 @@ function render(){
   const vent    = +document.getElementById('effort').value;
 
   let start = new Date(); start.setHours(hh, mm, 0, 0);
-  if(start < new Date()) start.setDate(start.getDate() + 1);   // today's slot passed → tomorrow
+  if(start < new Date()) start.setDate(start.getDate() + 1);
 
   const e = exposure(start, minutes, vent);
   if(!e){ fail('That window is past the end of the forecast. Try an earlier time.'); return; }
 
   const b = applyDoseOverride(band(e.peakAqi), e, minutes, vent);
-  document.getElementById('verdict').style.borderLeftColor = b.color;
-  document.getElementById('verdict').classList.add('is-live');
-  document.getElementById('call').textContent = b.call;
-  document.getElementById('call').style.color = b.color;
+
+  document.getElementById('hero').style.setProperty('--tier', b.color);
+  document.getElementById('riskLabel').textContent = b.call === 'PRACTICE' ? 'LOW RISK' : b.call === 'MODIFY' ? 'MODERATE RISK' : 'HIGH RISK';
+  document.getElementById('call').textContent = b.call === 'PRACTICE' ? 'PRACTICE OK' : b.call;
   document.getElementById('reason').className = '';
   document.getElementById('reason').textContent =
     `${b.note} Peak AQI ${e.peakAqi} during a ${minutes}-minute session starting ${fmt(start)}.`;
+  document.getElementById('badge').innerHTML = iconFor(b.call);
+
+  document.getElementById('whyBox').style.display = 'block';
+  document.getElementById('whyList').innerHTML = buildWhy(b, e, minutes, vent)
+    .map((t,i) => `<li><span class="num">${i+1}</span><span>${t}</span></li>`).join('');
 
   document.getElementById('dose').textContent  = e.dose.toFixed(0);
   document.getElementById('equiv').textContent = e.equiv.toFixed(1) + '\u00D7';
 
-  drawTimeline(start, minutes);
+  drawChart(start, minutes);
 
-  const alt = betterWindow(start, minutes, vent, e);
-  document.getElementById('suggestBox').innerHTML = alt
-    ? `<div class="suggest">Moving practice to <strong>${fmt(alt.t)}</strong> drops inhaled
-       PM2.5 by <strong>${Math.round((1 - alt.e.dose/e.dose)*100)}%</strong>
-       (${alt.e.dose.toFixed(0)} &micro;g, peak AQI ${alt.e.peakAqi}).</div>`
-    : '';
+  const alts = findAlternatives(start, minutes, vent, e.dose);
+  const altSection = document.getElementById('altSection');
+  if(alts.length){
+    altSection.style.display = 'block';
+    document.getElementById('altList').innerHTML = alts.map(a => {
+      const pct = Math.round((1 - a.e.dose/e.dose) * 100);
+      return `<div class="alt-row">
+        <div><div class="alt-time">${fmt(a.t)}</div><div class="alt-detail">Peak AQI ${a.e.peakAqi}, ${a.e.dose.toFixed(0)} \u00B5g dose</div></div>
+        <div class="alt-save">${pct}% lower</div>
+      </div>`;
+    }).join('');
+  } else {
+    altSection.style.display = 'none';
+  }
 }
 
-function drawTimeline(start, minutes){
-  const tl = document.getElementById('timeline');
-  const tk = document.getElementById('ticks');
-  tl.innerHTML = ''; tk.innerHTML = '';
-  const slices = Math.ceil(minutes / 30);
-  for(let i = 0; i < slices; i++){
-    const t = new Date(start.getTime() + i*30*60000);
-    const s = sampleAt(t); if(!s) continue;
-    const d = document.createElement('div');
-    d.className = 'block';
-    d.style.background = band(s.aqi).color;
-    d.textContent = Math.round(s.aqi);
-    d.title = `${fmt(t)} — AQI ${Math.round(s.aqi)}, PM2.5 ${s.pm.toFixed(1)}`;
-    tl.appendChild(d);
-    const k = document.createElement('span');
-    k.textContent = t.getMinutes() === 0
-      ? t.toLocaleTimeString('en-US',{hour:'numeric'})
-      : t.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-    tk.appendChild(k);
+function drawChart(start, minutes){
+  const svg = document.getElementById('chart');
+  const W = 640, H = 150, PAD = 8;
+  const yMax = 150;
+  const points = [];
+  for(let m = 0; m <= minutes; m += 15){
+    const s = sampleAt(new Date(start.getTime() + m*60000));
+    if(s) points.push({ m, aqi: s.aqi });
   }
+  if(points.length < 2){ svg.innerHTML = ''; return; }
+
+  const x = m => PAD + (m/minutes) * (W - PAD*2);
+  const y = aqi => H - PAD - (Math.min(aqi,yMax)/yMax) * (H - PAD*2);
+
+  let segs = '';
+  for(let i=0;i<points.length-1;i++){
+    const a = points[i], b = points[i+1];
+    const avg = (a.aqi + b.aqi)/2;
+    segs += `<line x1="${x(a.m)}" y1="${y(a.aqi)}" x2="${x(b.m)}" y2="${y(b.aqi)}" stroke="${band(avg).color}" stroke-width="3" stroke-linecap="round"/>`;
+  }
+
+  const areaPath = 'M ' + points.map(p => `${x(p.m)},${y(p.aqi)}`).join(' L ')
+    + ` L ${x(points[points.length-1].m)},${H-PAD} L ${x(points[0].m)},${H-PAD} Z`;
+
+  const grid50 = y(50), grid100 = y(100);
+
+  let nowLine = '';
+  const nowMin = (Date.now() - start.getTime()) / 60000;
+  if(nowMin > 0 && nowMin < minutes){
+    nowLine = `<line x1="${x(nowMin)}" y1="${PAD}" x2="${x(nowMin)}" y2="${H-PAD}" stroke="var(--text-faint)" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="${x(nowMin)+4}" y="${PAD+10}" fill="var(--text-faint)" font-size="9" font-family="IBM Plex Mono, monospace">NOW</text>`;
+  }
+
+  svg.innerHTML = `
+    <line x1="${PAD}" y1="${grid50}" x2="${W-PAD}" y2="${grid50}" stroke="var(--border)" stroke-width="1"/>
+    <line x1="${PAD}" y1="${grid100}" x2="${W-PAD}" y2="${grid100}" stroke="var(--border)" stroke-width="1"/>
+    <path d="${areaPath}" fill="var(--panel-2)" opacity="0.6"/>
+    ${segs}
+    ${nowLine}
+  `;
+}
+
+function iconFor(call){
+  if(call === 'PRACTICE') return '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+  if(call === 'MODIFY') return '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><line x1="12" y1="9" x2="12" y2="14"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>';
+  if(call === 'MOVE INDOORS') return '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="7" y1="7" x2="17" y2="17"/></svg>';
+  return '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg>';
 }
 
 const fmt = d => d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
@@ -433,6 +487,8 @@ const fmt = d => d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
 function fail(msg){
   document.getElementById('call').textContent = 'NO CALL';
   document.getElementById('reason').textContent = msg;
+  document.getElementById('whyBox').style.display = 'none';
+  document.getElementById('altSection').style.display = 'none';
 }
 
 ['start','mins','effort'].forEach(id =>
