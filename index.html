@@ -328,6 +328,22 @@ async function loadGroundStation(){
   }
 }
 
+async function reverseGeocode(lat, lon){
+  try{
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`);
+    if(!r.ok) return null;
+    const j = await r.json();
+    const a = j.address || {};
+    // Prefer the most specific thing OSM knows at this point: a named
+    // building/amenity (sometimes literally the school), then neighborhood,
+    // then city. Falls back to null if nothing usable comes back.
+    return j.name || a.amenity || a.building || a.neighbourhood || a.suburb
+      || a.city || a.town || a.village || a.county || null;
+  }catch(e){
+    return null;
+  }
+}
+
 async function useMyLocation(){
   const btn = document.getElementById('locBtn');
   if(!navigator.geolocation){
@@ -342,6 +358,10 @@ async function useMyLocation(){
     btn.textContent = 'Using your location';
     HOURS = null; GROUND = null;
     document.getElementById('groundSection').style.display = 'none';
+
+    const place = await reverseGeocode(LAT, LON);
+    if(place){ LOCATION_LABEL = place; refreshLocationLabel(); }
+
     await load().catch(() => fail('Could not reach the air quality service. Check your connection and reload.'));
     loadGroundStation();
   }, () => {
