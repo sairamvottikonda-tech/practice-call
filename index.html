@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Practice Call — Arcadia HS</title>
+<title>Practice Call</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -24,33 +24,35 @@
   }
   *{box-sizing:border-box;}
   body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Barlow',system-ui,sans-serif;
-    -webkit-font-smoothing:antialiased;
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:'Barlow',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
   }
   .app{max-width:480px;margin:0 auto;padding:18px 16px 60px;}
 
-  .topbar{
-    display:flex;justify-content:space-between;align-items:baseline;
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--text-faint);margin-bottom:14px;
+  .topbar{margin-bottom:14px;}
+  .topbar #locLabel{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--text-faint);
   }
+  .topbar-row2{display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+  .link-btn{
+    background:none;border:none;padding:0;color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;
+    text-decoration:underline;cursor:pointer;
+  }
+  .link-btn:hover{color:var(--text);}
+  #stamp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-faint);}
 
   .section-title{
     font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--text-dim);margin:0 0 10px;
   }
 
-  /* ---- hero verdict ---- */
   .hero{
     background:var(--panel);border:1px solid var(--border);border-radius:18px;
     padding:22px 20px;margin-bottom:14px;position:relative;overflow:hidden;
   }
-  .hero::before{
-    content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--tier,var(--good));
-  }
+  .hero::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--tier,var(--good));}
   .hero-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
   .badge{
     width:34px;height:34px;border-radius:50%;flex:none;
@@ -69,7 +71,6 @@
   }
   .hero-reason{margin:0;font-size:15px;line-height:1.5;color:var(--text-dim);max-width:44ch;}
 
-  /* ---- why this call ---- */
   .why{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
   .why ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
   .why li{display:flex;gap:10px;font-size:14px;line-height:1.5;color:var(--text-dim);}
@@ -80,16 +81,10 @@
   }
   .why strong{color:var(--text);font-weight:600;}
 
-  /* ---- controls ---- */
   .controls{margin-bottom:14px;}
-  .control-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;
-  }
+  .control-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .control-grid .full{grid-column:1/-1;}
-  .field{
-    background:var(--panel);border:1px solid var(--border);border-radius:14px;
-    padding:11px 13px;
-  }
+  .field{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:11px 13px;}
   .field label{
     display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;
     letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px;
@@ -101,48 +96,36 @@
   .field select{appearance:none;-webkit-appearance:none;}
   .field input:focus,.field select:focus{outline:2px solid var(--text-dim);outline-offset:3px;border-radius:4px;}
 
-  /* ---- chart ---- */
   .chart-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 18px 14px;margin-bottom:14px;}
   #chart{width:100%;height:150px;display:block;}
-  .legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
-  .legend span{
+  .chart-ticks{
+    display:flex;justify-content:space-between;margin-top:6px;
     font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-faint);
-    display:flex;align-items:center;gap:5px;
   }
+  .legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+  .legend span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-faint);display:flex;align-items:center;gap:5px;}
   .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
-  /* ---- stats ---- */
   .stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
   .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
   .stat-card .n{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;line-height:1;}
   .stat-card .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-top:5px;}
 
-  /* ---- alternatives ---- */
   .alt-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:14px;}
-  .alt-row{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:10px 0;border-top:1px solid var(--border);
-  }
+  .alt-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--border);}
   .alt-row:first-of-type{border-top:none;padding-top:0;}
   .alt-time{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;}
   .alt-detail{font-size:12px;color:var(--text-faint);margin-top:2px;}
   .alt-save{
     font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--good);
-    background:color-mix(in srgb, var(--good) 15%, transparent);
-    padding:4px 9px;border-radius:20px;white-space:nowrap;
+    background:color-mix(in srgb, var(--good) 15%, transparent);padding:4px 9px;border-radius:20px;white-space:nowrap;
   }
 
-  /* ---- ground station ---- */
   .ground-section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px 20px;margin-bottom:14px;font-size:13px;line-height:1.5;color:var(--text-dim);}
   .ground-section strong{color:var(--text);}
 
-  footer{
-    font-size:12.5px;line-height:1.6;color:var(--text-faint);
-    border-top:1px solid var(--border);padding-top:14px;margin-top:6px;
-  }
-  footer code{font-family:'IBM Plex Mono',monospace;font-size:11px;}
+  footer{font-size:12.5px;line-height:1.6;color:var(--text-faint);border-top:1px solid var(--border);padding-top:14px;margin-top:6px;}
   footer strong{color:var(--text-dim);}
-
   .status{color:var(--text-dim);}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;}}
 </style>
@@ -151,8 +134,11 @@
 <div class="app">
 
   <div class="topbar">
-    <span>Arcadia HS &middot; 34.1298, &minus;118.0367</span>
-    <span id="stamp">loading</span>
+    <div id="locLabel">Arcadia HS &middot; 34.1298, &minus;118.0367</div>
+    <div class="topbar-row2">
+      <button id="locBtn" class="link-btn" type="button">Use my location</button>
+      <span id="stamp">loading</span>
+    </div>
   </div>
 
   <div class="hero" id="hero">
@@ -172,18 +158,12 @@
   <div class="controls">
     <p class="section-title">Practice window</p>
     <div class="control-grid">
-      <div class="field">
-        <label for="start">Starts</label>
-        <input type="time" id="start" value="15:30">
-      </div>
+      <div class="field"><label for="start">Starts</label><input type="time" id="start" value="15:30"></div>
       <div class="field">
         <label for="mins">Length</label>
         <select id="mins">
-          <option value="60">60 min</option>
-          <option value="90">90 min</option>
-          <option value="120" selected>120 min</option>
-          <option value="150">150 min</option>
-          <option value="180">180 min</option>
+          <option value="60">60 min</option><option value="90">90 min</option>
+          <option value="120" selected>120 min</option><option value="150">150 min</option><option value="180">180 min</option>
         </select>
       </div>
       <div class="field full">
@@ -203,6 +183,7 @@
   <div class="chart-section">
     <p class="section-title">Exposure across the window</p>
     <svg id="chart" viewBox="0 0 640 150" preserveAspectRatio="none"></svg>
+    <div class="chart-ticks" id="chartTicks"></div>
     <div class="legend">
       <span><i style="background:var(--good)"></i>Good</span>
       <span><i style="background:var(--moderate)"></i>Moderate</span>
@@ -224,11 +205,15 @@
   <div class="ground-section" id="groundSection" style="display:none"></div>
 
   <footer>
-    <strong>Before you demo this:</strong> the AQI thresholds are derived from public CIF guidance,
-    not yet confirmed against Arcadia Unified's own policy &mdash; that swap is what makes this
-    app official for your school. Validated against the May 19&ndash;20, 2026 LA County smoke
-    advisory naming Arcadia; at these coordinates the model never crossed 101 AQI that day, which
-    is a real gap between modeled and true local conditions during fast-moving smoke, not a bug.
+    <strong>Default view:</strong> Arcadia High School, where this app was built and tested.
+    Tap "Use my location" above to check anywhere else &mdash; the EPA's Good/Moderate/Unhealthy
+    categories are a nationwide standard, but the CIF-specific guidance quoted in the verdict
+    text is California-specific and may not apply outside CA.<br><br>
+    <strong>Before you demo this:</strong> thresholds are derived from public CIF guidance, not
+    yet confirmed against Arcadia Unified's own policy. Validated against the May 19&ndash;20,
+    2026 LA County smoke advisory naming Arcadia; at these coordinates the model never crossed
+    101 AQI that day, a real gap between modeled and true local conditions during fast-moving
+    smoke, not a bug.<br><br>
     Air quality data by Open&ndash;Meteo (CC BY 4.0). Ground station data by
     <a href="https://waqi.info" style="color:inherit">waqi.info</a>.
   </footer>
@@ -236,15 +221,25 @@
 </div>
 
 <script>
-const LAT = 34.1298, LON = -118.0367;
+let LAT = 34.1298, LON = -118.0367;
+let LOCATION_LABEL = 'Arcadia HS';
+let LOCATION_TZ = 'America/Los_Angeles';
+let LOCATION_OFFSET = '-07:00'; // overwritten from the API's own utc_offset_seconds on load
+
 const REST_VENT = 0.006;          // m³/min at rest
 const STEP = 5;                   // integration step, minutes
-
-// Sport ventilation values (m³/min) are engineering estimates from typical
-// exercise-physiology minute-ventilation ranges: resting ~6-8 L/min, light
-// activity ~20-30, moderate ~40-60, vigorous/sprint ~80-150. General
-// population ranges, not measured or personalized to any athlete.
 const WAQI_TOKEN = '2609ddbaf34b066cccc80ae97e2c7c0b5a0cf954';
+
+function offsetSecondsToString(sec){
+  const h = Math.trunc(sec/3600);
+  const m = Math.abs(sec % 3600) / 60;
+  return `${sec < 0 ? '-' : '+'}${String(Math.abs(h)).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+function locationDateString(date){
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: LOCATION_TZ, year:'numeric', month:'2-digit', day:'2-digit'
+  }).format(date);
+}
 
 const BANDS = [
   { max: 50,  color:'var(--good)',     call:'PRACTICE',
@@ -262,9 +257,7 @@ const BANDS = [
 ];
 const band = aqi => BANDS.find(b => aqi <= b.max);
 
-// EPA's 24-hour PM2.5 standard (35 µg/m³) as a reference concentration —
-// what "acceptable" would look like held constant for the whole session.
-const REFERENCE_PM = 35;
+const REFERENCE_PM = 35; // EPA 24-hr PM2.5 standard, µg/m³
 
 function applyDoseOverride(b, e, minutes, vent){
   const referenceDose = REFERENCE_PM * vent * minutes;
@@ -290,17 +283,24 @@ function milesBetween(lat1, lon1, lat2, lon2){
 }
 
 let HOURS = null;
-let GROUND = null; // {name, miles, aqi, time} once loaded
+let GROUND = null;
+
+function refreshLocationLabel(){
+  document.getElementById('locLabel').textContent =
+    `${LOCATION_LABEL} \u00B7 ${LAT.toFixed(4)}, ${LON.toFixed(4)}`;
+}
 
 async function load(){
   const url = 'https://air-quality-api.open-meteo.com/v1/air-quality'
     + `?latitude=${LAT}&longitude=${LON}`
-    + '&hourly=pm2_5,us_aqi&timezone=America/Los_Angeles&forecast_days=2';
+    + '&hourly=pm2_5,us_aqi&timezone=auto&forecast_days=2';
   const r = await fetch(url);
   if(!r.ok) throw new Error('status ' + r.status);
   const j = await r.json();
+  LOCATION_TZ = j.timezone;
+  LOCATION_OFFSET = offsetSecondsToString(j.utc_offset_seconds);
   HOURS = j.hourly.time.map((t,i) => ({
-    t: new Date(t), pm: j.hourly.pm2_5[i], aqi: j.hourly.us_aqi[i]
+    t: new Date(t + LOCATION_OFFSET), pm: j.hourly.pm2_5[i], aqi: j.hourly.us_aqi[i]
   })).filter(h => h.pm !== null);
   document.getElementById('stamp').textContent =
     'updated ' + new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
@@ -314,19 +314,39 @@ async function loadGroundStation(){
     const j = await r.json();
     if(j.status !== 'ok') throw new Error('no station nearby');
     const [slat, slon] = j.data.city.geo;
-    GROUND = {
-      name: j.data.city.name,
-      miles: milesBetween(LAT, LON, slat, slon),
-      aqi: j.data.aqi,
-      time: j.data.time.s.slice(11,16)
-    };
+    GROUND = { name: j.data.city.name, miles: milesBetween(LAT, LON, slat, slon), aqi: j.data.aqi, time: j.data.time.s.slice(11,16) };
     el.style.display = 'block';
     el.innerHTML = `<strong>Ground sensor check:</strong> ${GROUND.name} (${GROUND.miles.toFixed(1)} mi away)
       reads AQI ${GROUND.aqi} as of ${GROUND.time}. Live cross-check against a physical sensor, not part of the forecast above.`;
-    render(); // refresh "why" list now that ground data exists
+    if(LOCATION_LABEL === 'Your location'){
+      LOCATION_LABEL = `Near ${GROUND.name.split(',')[0]}`;
+      refreshLocationLabel();
+    }
+    render();
   }catch(e){
     el.style.display = 'none';
   }
+}
+
+async function useMyLocation(){
+  const btn = document.getElementById('locBtn');
+  if(!navigator.geolocation){
+    btn.textContent = 'Not supported on this browser';
+    return;
+  }
+  btn.textContent = 'Locating\u2026';
+  navigator.geolocation.getCurrentPosition(async pos => {
+    LAT = pos.coords.latitude; LON = pos.coords.longitude;
+    LOCATION_LABEL = 'Your location';
+    refreshLocationLabel();
+    btn.textContent = 'Using your location';
+    HOURS = null; GROUND = null;
+    document.getElementById('groundSection').style.display = 'none';
+    await load().catch(() => fail('Could not reach the air quality service. Check your connection and reload.'));
+    loadGroundStation();
+  }, () => {
+    btn.textContent = "Couldn't get your location \u2014 showing Arcadia HS";
+  }, { timeout: 8000 });
 }
 
 function sampleAt(when){
@@ -346,16 +366,12 @@ function exposure(start, minutes, vent){
   for(let m = 0; m < minutes; m += STEP){
     const s = sampleAt(new Date(start.getTime() + m*60000));
     if(!s) return null;
-    dose  += s.pm * vent * STEP;
-    pmSum += s.pm;
-    peak   = Math.max(peak, s.aqi);
-    n++;
+    dose += s.pm * vent * STEP; pmSum += s.pm; peak = Math.max(peak, s.aqi); n++;
   }
   const meanPm = pmSum / n;
   return { dose, peakAqi: Math.round(peak), meanPm, equiv: dose / (meanPm * REST_VENT * minutes) };
 }
 
-// Scan the next 24h for materially cleaner windows — top 3, spaced apart.
 function findAlternatives(start, minutes, vent, baselineDose){
   const candidates = [];
   for(let off = 30; off <= 24*60; off += 30){
@@ -388,12 +404,14 @@ function buildWhy(b, e, minutes, vent){
 
 function render(){
   if(!HOURS) return;
-  const [hh,mm] = document.getElementById('start').value.split(':').map(Number);
   const minutes = +document.getElementById('mins').value;
   const vent    = +document.getElementById('effort').value;
+  const timeVal = document.getElementById('start').value;
 
-  let start = new Date(); start.setHours(hh, mm, 0, 0);
-  if(start < new Date()) start.setDate(start.getDate() + 1);
+  let start = new Date(`${locationDateString(new Date())}T${timeVal}:00${LOCATION_OFFSET}`);
+  if(start < new Date()){
+    start = new Date(`${locationDateString(new Date(Date.now()+86400000))}T${timeVal}:00${LOCATION_OFFSET}`);
+  }
 
   const e = exposure(start, minutes, vent);
   if(!e){ fail('That window is past the end of the forecast. Try an earlier time.'); return; }
@@ -435,8 +453,7 @@ function render(){
 
 function drawChart(start, minutes){
   const svg = document.getElementById('chart');
-  const W = 640, H = 150, PAD = 8;
-  const yMax = 150;
+  const W = 640, H = 150, PAD = 8, yMax = 150;
   const points = [];
   for(let m = 0; m <= minutes; m += 15){
     const s = sampleAt(new Date(start.getTime() + m*60000));
@@ -449,14 +466,11 @@ function drawChart(start, minutes){
 
   let segs = '';
   for(let i=0;i<points.length-1;i++){
-    const a = points[i], b = points[i+1];
-    const avg = (a.aqi + b.aqi)/2;
+    const a = points[i], b = points[i+1], avg = (a.aqi + b.aqi)/2;
     segs += `<line x1="${x(a.m)}" y1="${y(a.aqi)}" x2="${x(b.m)}" y2="${y(b.aqi)}" stroke="${band(avg).color}" stroke-width="3" stroke-linecap="round"/>`;
   }
-
   const areaPath = 'M ' + points.map(p => `${x(p.m)},${y(p.aqi)}`).join(' L ')
     + ` L ${x(points[points.length-1].m)},${H-PAD} L ${x(points[0].m)},${H-PAD} Z`;
-
   const grid50 = y(50), grid100 = y(100);
 
   let nowLine = '';
@@ -470,9 +484,17 @@ function drawChart(start, minutes){
     <line x1="${PAD}" y1="${grid50}" x2="${W-PAD}" y2="${grid50}" stroke="var(--border)" stroke-width="1"/>
     <line x1="${PAD}" y1="${grid100}" x2="${W-PAD}" y2="${grid100}" stroke="var(--border)" stroke-width="1"/>
     <path d="${areaPath}" fill="var(--panel-2)" opacity="0.6"/>
-    ${segs}
-    ${nowLine}
+    ${segs}${nowLine}
   `;
+
+  const tickCount = 4;
+  let ticksHtml = '';
+  for(let i=0;i<tickCount;i++){
+    const idx = Math.round((i/(tickCount-1)) * (points.length-1));
+    const t = new Date(start.getTime() + points[idx].m*60000);
+    ticksHtml += `<span>${fmt(t)}</span>`;
+  }
+  document.getElementById('chartTicks').innerHTML = ticksHtml;
 }
 
 function iconFor(call){
@@ -482,7 +504,7 @@ function iconFor(call){
   return '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg>';
 }
 
-const fmt = d => d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+const fmt = d => d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:LOCATION_TZ});
 
 function fail(msg){
   document.getElementById('call').textContent = 'NO CALL';
@@ -491,9 +513,10 @@ function fail(msg){
   document.getElementById('altSection').style.display = 'none';
 }
 
-['start','mins','effort'].forEach(id =>
-  document.getElementById(id).addEventListener('input', render));
+['start','mins','effort'].forEach(id => document.getElementById(id).addEventListener('input', render));
+document.getElementById('locBtn').addEventListener('click', useMyLocation);
 
+refreshLocationLabel();
 load().catch(() => fail('Could not reach the air quality service. Check your connection and reload.'));
 loadGroundStation();
 </script>
